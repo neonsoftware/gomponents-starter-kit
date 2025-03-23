@@ -1,11 +1,26 @@
-# Detect the operating system and set TAILWINDCSS_OS_ARCH accordingly
+# Detect the operating system and architecture to set TAILWINDCSS_OS_ARCH accordingly
 UNAME_S := $(shell uname -s)
+UNAME_M := $(shell uname -m)
 ifeq ($(UNAME_S),Linux)
-	TAILWINDCSS_OS_ARCH := linux-x64
+	ifeq ($(UNAME_M),x86_64)
+		TAILWINDCSS_OS_ARCH := linux-x64
+	else ifeq ($(UNAME_M),aarch64)
+		TAILWINDCSS_OS_ARCH := linux-arm64
+	else
+		$(error Unsupported Linux architecture: $(UNAME_M))
+	endif
 else ifeq ($(UNAME_S),Darwin)
 	TAILWINDCSS_OS_ARCH := macos-arm64
+else ifeq ($(OS),Windows_NT)
+	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+		TAILWINDCSS_OS_ARCH := windows-x64.exe
+	else ifeq ($(PROCESSOR_ARCHITECTURE),ARM64)
+		TAILWINDCSS_OS_ARCH := windows-arm64.exe
+	else
+		$(error Unsupported Windows architecture: $(PROCESSOR_ARCHITECTURE))
+	endif
 else
-	$(error This Makefile only supports Linux and macOS. Windows is not supported.)
+	$(error Unsupported operating system: $(UNAME_S))
 endif
 
 .PHONY: benchmark
