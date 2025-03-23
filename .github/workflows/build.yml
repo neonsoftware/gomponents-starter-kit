@@ -46,8 +46,8 @@ jobs:
     - name: Build CSS
       run: make build-css
 
-    - name: Build Docker image
-      run: make build-docker
+    #- name: Build Docker image
+    #  run: make build-docker
 
     - name: Run tests
       run: make test
