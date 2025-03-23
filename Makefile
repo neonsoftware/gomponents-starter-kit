@@ -53,7 +53,7 @@ tailwindcss:
 	chmod a+x tailwindcss
 	mkdir -p node_modules/tailwindcss/lib
 ifeq ($(OS),Windows_NT)
-	copy tailwindcss node_modules\tailwindcss\lib\cli.js
+	cmd /c copy tailwindcss node_modules\tailwindcss\lib\cli.js
 else
 	ln -sf tailwindcss node_modules/tailwindcss/lib/cli.js
 endif
