@@ -51,7 +51,12 @@ tailwindcss:
 	curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-$(TAILWINDCSS_OS_ARCH)
 	mv tailwindcss-$(TAILWINDCSS_OS_ARCH) tailwindcss
 	chmod a+x tailwindcss
-	mkdir -p node_modules/tailwindcss/lib && ln -sf tailwindcss node_modules/tailwindcss/lib/cli.js
+	mkdir -p node_modules/tailwindcss/lib
+ifeq ($(OS),Windows_NT)
+	copy tailwindcss node_modules\tailwindcss\lib\cli.js
+else
+	ln -sf tailwindcss node_modules/tailwindcss/lib/cli.js
+endif
 	echo '{"devDependencies": {"tailwindcss": "latest"}}' >package.json
 
 .PHONY: test
